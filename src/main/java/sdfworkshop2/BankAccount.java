@@ -40,16 +40,8 @@ public class BankAccount {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getAcctId() {
         return acctId;
-    }
-
-    public void setAcctId(String acctId) {
-        this.acctId = acctId;
     }
 
     public float getBalance() {
@@ -124,7 +116,7 @@ public class BankAccount {
             System.err.print(e);
             throw new IllegalArgumentException("Invalid withdraw amount");
         }
-        return withdrawAmtF.floatValue();
+        return this.balance;
     }
     
     public void deposit(String depositAmt){
