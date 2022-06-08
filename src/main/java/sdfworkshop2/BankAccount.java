@@ -1,4 +1,4 @@
-package main.java.sdfworkshop2;
+package sdfworkshop2;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -104,7 +104,7 @@ public class BankAccount {
                 throw new IllegalArgumentException("Account is closed lah!");
             }
 
-            if(withdrawAmtF.floatValue > this.balance){
+            if(withdrawAmtF.floatValue() > this.balance){
                 throw new IllegalArgumentException("Withdrawl amount cannot be more than balance");
             }
 

@@ -1,7 +1,5 @@
 package sdfworkshop2;
 
-import main.java.sdfworkshop2.BankAccount;
-
 /**
  * Hello world!
  *
@@ -15,7 +13,5 @@ public class App
         bkAcc.deposit("1000");
         System.out.println("My new account balance >" + bkAcc.getBalance());
         bkAcc.withdraw("0");
-        
-
     }
 }
