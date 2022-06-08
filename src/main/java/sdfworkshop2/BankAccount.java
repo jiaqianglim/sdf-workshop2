@@ -3,32 +3,39 @@ package main.java.sdfworkshop2;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.UUID;
-import java.utils.List;
+import java.util.List;
 
-public class sdfworkshop2 {
-
-    //properties
+public class BankAccount {
+    // bank account
     private String name ="";
-    private String accId = UUID.randomUUID().toString().substring(0,8);
+    
+    // this is a generated account id from the java util UUID class
+    private String acctId =  UUID.randomUUID()
+                                    .toString()
+                                    .substring(0,8);
+    // holds the bank acc balance
     private float balance = 0f;
-    //transaction list on bankaccount object
+    // list of transaction history in the event of 
+    // anything done on the bankaccount object
     private List<String> transaction = new LinkedList<>();
+
     private boolean isClosed = false;
+
     private LocalDateTime accountCreationDate;
     private LocalDateTime accountClosingDate;
-
-    //constructors
-    //with bank account name
+    
+    // constructor with bank account name
     public BankAccount(String name){
         this.name = name;
     }
-    // with bank account name, initial balance
+
+    // 2nd constructor with bank account name and the initial balance.
     public BankAccount(String name, float initialBal){
         this.name = name;
         this.balance = initialBal;
     }
 
-    //get set
+    // Getter and setter for the rest of the properties
     public String getName() {
         return name;
     }
@@ -37,12 +44,12 @@ public class sdfworkshop2 {
         this.name = name;
     }
 
-    public String getAccId() {
-        return accId;
+    public String getAcctId() {
+        return acctId;
     }
 
-    public void setAccId(String accId) {
-        this.accId = accId;
+    public void setAcctId(String acctId) {
+        this.acctId = acctId;
     }
 
     public float getBalance() {
@@ -69,7 +76,7 @@ public class sdfworkshop2 {
         this.isClosed = isClosed;
     }
 
-    public Date getAccountCreationDate() {
+    public LocalDateTime getAccountCreationDate() {
         return accountCreationDate;
     }
 
@@ -77,7 +84,7 @@ public class sdfworkshop2 {
         this.accountCreationDate = accountCreationDate;
     }
 
-    public Date getAccountClosingDate() {
+    public LocalDateTime getAccountClosingDate() {
         return accountClosingDate;
     }
 
@@ -85,74 +92,69 @@ public class sdfworkshop2 {
         this.accountClosingDate = accountClosingDate;
     }
 
-    protected float withdraw(float awithdrawAmt){
-        Float withdrawAmt = null;
+    public float withdraw(String withdrawAmt){
+        Float withdrawAmtF = null;
         try{
-            withdrawAmt = Float.parseFloat(awithdrawAmt);
-            
-            //invalid amount
-            if (withdrawAmt.floatValue() <= 0){
-                throw new IllegalArgumentException("Amount cannot be zero or negative");
-            }
-            
-            //account is closed
-            if(this.isClosed){
-                throw new IllegalArgumentException("Amount is closed");
+            withdrawAmtF = Float.parseFloat(withdrawAmt);
+            if (withdrawAmtF.floatValue() <= 0){
+                throw new IllegalArgumentException("Withdrawal amount cannot be negative or kosong");
             }
 
-            this.balance -= withdrawAmt().floatValue();
-            //construct the transaction history event log;
+            if(this.isClosed()){
+                throw new IllegalArgumentException("Account is closed lah!");
+            }
+
+            if(withdrawAmtF.floatValue > this.balance){
+                throw new IllegalArgumentException("Withdrawl amount cannot be more than balance");
+            }
+
+            this.balance = this.balance  - withdrawAmtF.floatValue();
+            // Construct the transaction history event log 
             StringBuilder txnStrbld = new StringBuilder();
             txnStrbld.append("Withdraw $");
-            txnStrbld.append(depositAmt.floatValue());
+            txnStrbld.append(withdrawAmtF.floatValue());
             txnStrbld.append(" at ");
             txnStrbld.append(LocalDateTime.now());
-            System.out.println(txnStrbld);
-            //save event log into the txn linkedList
-            transaction.add(txnStrbld.toString);
-            //update the withdrawal amount
+            System.out.println(txnStrbld.toString());
+            // save the event log into the txn linkedList 
+            transaction.add(txnStrbld.toString());
+            // update the deposit amount
             
-
         }catch(NumberFormatException e){
-            //invalid ammount
-            System.out.println(e);
-            throw new IllegalArgumentException("Invalid deposit amount");
+            System.err.print(e);
+            throw new IllegalArgumentException("Invalid withdraw amount");
         }
-
-        return withdrawAmt;
+        return withdrawAmtF.floatValue();
     }
-
-    protected void deposit(String adepositAmt){
+    
+    public void deposit(String depositAmt){
         try{
-            Float depositAmt = Float.parseFloat(adepositAmt);
-            
-            //invalid amount
-            if (depositAmt.floatValue() <= 0){
-                throw new IllegalArgumentException("Amount cannot be zero or negative");
-            }
-            
-            //account is closed
-            if(this.isClosed){
-                throw new IllegalArgumentException("Amount is closed");
+            Float depositAmtF = Float.parseFloat(depositAmt);
+            if (depositAmtF.floatValue() <= 0){
+                throw new IllegalArgumentException("Deposit amount cannot be negative or kosong");
             }
 
-            this.balance += depositAmt().floatValue();
-            //construct the transaction history event log;
+            if(this.isClosed()){
+                throw new IllegalArgumentException("Account is closed lah!");
+            }
+
+            this.balance = this.balance  + depositAmtF.floatValue();
+            // Construct the transaction history event log 
             StringBuilder txnStrbld = new StringBuilder();
             txnStrbld.append("Deposit $");
-            txnStrbld.append(depositAmt.floatValue());
+            txnStrbld.append(depositAmtF.floatValue());
             txnStrbld.append(" at ");
             txnStrbld.append(LocalDateTime.now());
-            System.out.println(txnStrbld);
-            //save event log into the txn linkedList
-            transaction.add(txnStrbld.toString);
-            //update the deposit amount
+            System.out.println(txnStrbld.toString());
+            // save the event log into the txn linkedList 
+            transaction.add(txnStrbld.toString());
+            // update the deposit amount
             
-
         }catch(NumberFormatException e){
-            //invalid ammount
-            System.out.println(e);
+            System.err.print(e);
             throw new IllegalArgumentException("Invalid deposit amount");
         }
+        
     }
+
 }
